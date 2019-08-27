@@ -11,6 +11,19 @@
     "big-integer": "^1.6.44"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2"
+    "@types/node": "^12.7.2",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "standard-version": "^7.0.0",
+    "typescript": "^3.5.3"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "commit": "git-cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

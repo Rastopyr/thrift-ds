@@ -1,32 +1,27 @@
 {
-    "compilerOptions": {
-      "target": "ES2016",
-      "module": "ESNext",
-      "sourceMap": true,
-      "noEmit": false,
-      "importHelpers": true,
-  
-      "strict": true,
-      "noImplicitAny": true,
-      "strictNullChecks": true,
-      "strictFunctionTypes": true,
-      "strictBindCallApply": true,
-      "strictPropertyInitialization": true,
-      "noImplicitThis": true,
-      "alwaysStrict": true,
-  
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
-      "noFallthroughCasesInSwitch": true,
-  
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-  
-      "types": ["node"]
-    },
-  
-    "exclude": ["node_modules"]
-  }
-  
+  "compilerOptions": {
+    "module": "es2015",
+    "moduleResolution": "node",
+    "sourceMap": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "alwaysStrict": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "types": ["node"]
+  },
+
+  "exclude": ["node_modules"]
+}
