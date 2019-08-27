@@ -19,7 +19,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "release": "standard-version"
   },
   "config": {
     "commitizen": {
