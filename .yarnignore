@@ -1,5 +1,7 @@
 src/thrift.ts
+node_modules
 node_modules/*
 .gitignore
 jest.config.js
 tsconfig.json
+yarn-error.log

@@ -77,7 +77,9 @@ export class Writer {
   }
 
   pushToBuffer(value: string | Buffer) {
-    const concatValue = Buffer.isBuffer(value) ? value : Buffer.from(value, 'ascii');
+    const concatValue = Buffer.isBuffer(value)
+      ? value
+      : Buffer.from(value, "ascii");
 
     this.buffer = Buffer.concat([this.buffer, concatValue]);
   }
@@ -192,32 +194,32 @@ export class Writer {
     switch (type) {
       case Compact.TYPE_TRUE:
       case Compact.TYPE_FALSE:
-        list.forEach(value => {
+        list.forEach((value) => {
           this.writeByte(value ? Compact.TYPE_TRUE : Compact.TYPE_FALSE);
         });
         break;
       case Compact.TYPE_BYTE:
-        list.forEach(number => {
+        list.forEach((number) => {
           this.writeByte(number);
         });
         break;
       case Compact.TYPE_I16:
-        list.forEach(number => {
+        list.forEach((number) => {
           this.writeWord(number);
         });
         break;
       case Compact.TYPE_I32:
-        list.forEach(number => {
+        list.forEach((number) => {
           this.writeInt(number);
         });
         break;
       case Compact.TYPE_I64:
-        list.forEach(number => {
+        list.forEach((number) => {
           this.writeLongInt(number);
         });
         break;
       case Compact.TYPE_BINARY:
-        list.forEach(string => {
+        list.forEach((string) => {
           this.writeVarint(string.length);
           this.writeBinary(string);
         });
@@ -243,7 +245,7 @@ export class Writer {
 export class ThriftProxyHandler implements ProxyHandler<{}> {
   constructor(
     private readonly writer: Writer,
-    private readonly fields: FieldDefinition[],
+    private readonly fields: FieldDefinition[]
   ) {}
 
   set(target: any, propName: string, value: any) {
@@ -275,7 +277,11 @@ export class ThriftProxyHandler implements ProxyHandler<{}> {
           valueType: { type }
         } = fieldType as ListType;
 
-        this.writer.writeList(idValue, ThriftCompact[type as SyntaxType.ListType], value);
+        this.writer.writeList(
+          idValue,
+          ThriftCompact[type as SyntaxType.ListType],
+          value
+        );
         break;
 
       case SyntaxType.Identifier:
@@ -283,7 +289,7 @@ export class ThriftProxyHandler implements ProxyHandler<{}> {
         // console.log(value)
         if (value instanceof ThriftProxyObject) {
           this.writer.writeBinary(value.toString());
-        } else if(typeof value === 'string') {
+        } else if (typeof value === "string") {
           this.writer.writeBinary(value);
         }
 
@@ -309,9 +315,7 @@ export class ThriftProxyObject {
   }
 }
 
-const thriftStruct = (
-  fields: FieldDefinition[],
-) => {
+const thriftStruct = (fields: FieldDefinition[]) => {
   return () => {
     const writer = new Writer();
     const proxyObject = new ThriftProxyObject(writer);
@@ -328,9 +332,7 @@ const thriftNamespace = (ast: ThriftDocument) => {
   for (const statement of body) {
     switch (statement.type) {
       case SyntaxType.StructDefinition:
-        struct[statement.name.value] = thriftStruct(
-          statement.fields,
-        );
+        struct[statement.name.value] = thriftStruct(statement.fields);
         break;
       default:
         break;
