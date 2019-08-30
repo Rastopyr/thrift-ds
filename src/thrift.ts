@@ -63,6 +63,99 @@ const ThriftCompact = {
   [SyntaxType.FalseKeyword]: TYPE_FLOAT
 };
 
+export default class PacketStream {
+  constructor(private buffer: Buffer = new Buffer(""), private position = 0) {
+  }
+
+  toString() {
+    return this.buffer;
+  }
+
+  read(count: number) {
+    let contentLength = this.buffer.length;
+
+    if ((this.position > contentLength) || (count > (contentLength - this.position))) {
+      throw new Error('End of stream');
+    }
+
+    let chunk = this.buffer.slice(this.position, this.position + count);
+    let readBytes = chunk.length;
+
+    this.position += readBytes;
+
+    return chunk;
+  }
+
+  write(value: string | Buffer) {
+    const concatValue = Buffer.isBuffer(value)
+      ? value
+      : Buffer.from(value, "ascii");
+
+    this.buffer = Buffer.concat([this.buffer, concatValue]);
+  }
+
+  writeByte(value: number) {
+    this.write(
+      String.fromCharCode(value)
+    );
+  }
+
+  readByte() {
+    let byte = this.read(1);
+    return byte[0];
+  }
+
+  writeWord(value: number) {
+    this.write(
+      String.fromCharCode(
+        (value & 0xFFFF) >> 8
+      )
+    );
+
+    this.write(
+      String.fromCharCode(
+        value & 0xFF
+      )
+    );
+  }
+
+  readWord() {
+    return (this.readByte() << 8) + this.readByte();
+  }
+
+  writeString(value: string) {
+    this.writeWord(
+      value.length
+    );
+
+    this.write(value);
+  }
+
+  readString() {
+    let length = this.readWord();
+
+    return this.read(length);
+  }
+
+  getRemainingBytes() {
+    return this.buffer.length - this.position;
+  }
+
+  seek(offset: number) {
+    this.position += offset;
+  }
+
+  cut() {
+    this.buffer = this.buffer.slice(this.position);
+
+    if (!this.buffer) {
+      this.buffer = new Buffer('', 'ascii');
+    }
+
+    this.position = 0;
+  }
+}
+
 export class Writer {
   constructor(
     private buffer = Buffer.from(""),
