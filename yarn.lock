@@ -2335,6 +2335,14 @@ text-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/text-extensions/-/text-extensions-2.0.0.tgz#43eabd1b495482fae4a2bf65e5f56c29f69220f6"
   integrity sha512-F91ZqLgvi1E0PdvmxMgp+gcf6q8fMH7mhdwWfzXnl1k+GbpQDmi8l7DzLC5JTASKbwpY3TfxajAUzAXcv2NmsQ==
 
+thrift-ds@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/thrift-ds/-/thrift-ds-1.1.0.tgz#acb764a8de56d4bb6ee846ede615b4a6c48ca5fc"
+  integrity sha512-kTIk7SXuZC+BZhxF3ZxR4gSU9uXLZY2st2ss/igQJbfC1t+kpy4tA4AoOIX+jTI+g3EOFKAzG62lI8AJskcUIg==
+  dependencies:
+    "@creditkarma/thrift-parser" "^1.2.0"
+    big-integer "^1.6.44"
+
 through2@^2.0.0, through2@^2.0.2:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.5.tgz#01c1e39eb31d07cb7d03a96a70823260b23132cd"

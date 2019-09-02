@@ -1,4 +1,3 @@
-import { createHash } from "crypto";
 import BigNumber from "big-integer";
 import {
   ThriftDocument,
@@ -8,12 +7,6 @@ import {
   ListType,
   ThriftStatement
 } from "@creditkarma/thrift-parser";
-
-export function md5(value: string | Buffer) {
-  return createHash("md5")
-    .update(value)
-    .digest("hex");
-}
 
 export const TYPE_STOP = 0x00;
 export const TYPE_TRUE = 0x01;
@@ -63,7 +56,7 @@ const ThriftCompact = {
   [SyntaxType.FalseKeyword]: TYPE_FLOAT
 };
 
-export default class PacketStream {
+export class PacketStream {
   constructor(private buffer: Buffer = new Buffer(""), private position = 0) {
   }
 
