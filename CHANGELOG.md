@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/Rastopyr/thrift-ds/compare/v1.1.0...v1.1.1) (2019-09-02)
+
+
+### Bug Fixes
+
+* **bug:** remove test code. Properly export PacketStream ([a43355c](https://github.com/Rastopyr/thrift-ds/commit/a43355c))
+
 ## [1.1.0](https://github.com/Rastopyr/thrift-ds/compare/v1.0.2...v1.1.0) (2019-08-30)
 
 
