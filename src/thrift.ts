@@ -57,8 +57,7 @@ const ThriftCompact = {
 };
 
 export class PacketStream {
-  constructor(private buffer: Buffer = new Buffer(""), private position = 0) {
-  }
+  constructor(private buffer: Buffer = Buffer.from(""), private position = 0) {}
 
   toString() {
     return this.buffer;
@@ -67,8 +66,11 @@ export class PacketStream {
   read(count: number) {
     let contentLength = this.buffer.length;
 
-    if ((this.position > contentLength) || (count > (contentLength - this.position))) {
-      throw new Error('End of stream');
+    if (
+      this.position > contentLength ||
+      count > contentLength - this.position
+    ) {
+      throw new Error("End of stream");
     }
 
     let chunk = this.buffer.slice(this.position, this.position + count);
@@ -88,9 +90,7 @@ export class PacketStream {
   }
 
   writeByte(value: number) {
-    this.write(
-      String.fromCharCode(value)
-    );
+    this.write(String.fromCharCode(value));
   }
 
   readByte() {
@@ -99,17 +99,9 @@ export class PacketStream {
   }
 
   writeWord(value: number) {
-    this.write(
-      String.fromCharCode(
-        (value & 0xFFFF) >> 8
-      )
-    );
+    this.write(String.fromCharCode((value & 0xffff) >> 8));
 
-    this.write(
-      String.fromCharCode(
-        value & 0xFF
-      )
-    );
+    this.write(String.fromCharCode(value & 0xff));
   }
 
   readWord() {
@@ -117,9 +109,7 @@ export class PacketStream {
   }
 
   writeString(value: string) {
-    this.writeWord(
-      value.length
-    );
+    this.writeWord(value.length);
 
     this.write(value);
   }
@@ -142,7 +132,7 @@ export class PacketStream {
     this.buffer = this.buffer.slice(this.position);
 
     if (!this.buffer) {
-      this.buffer = new Buffer('', 'ascii');
+      this.buffer = Buffer.from("", "ascii");
     }
 
     this.position = 0;
@@ -280,32 +270,32 @@ export class Writer {
     switch (type) {
       case Compact.TYPE_TRUE:
       case Compact.TYPE_FALSE:
-        list.forEach((value) => {
+        list.forEach(value => {
           this.writeByte(value ? Compact.TYPE_TRUE : Compact.TYPE_FALSE);
         });
         break;
       case Compact.TYPE_BYTE:
-        list.forEach((number) => {
+        list.forEach(number => {
           this.writeByte(number);
         });
         break;
       case Compact.TYPE_I16:
-        list.forEach((number) => {
+        list.forEach(number => {
           this.writeWord(number);
         });
         break;
       case Compact.TYPE_I32:
-        list.forEach((number) => {
+        list.forEach(number => {
           this.writeInt(number);
         });
         break;
       case Compact.TYPE_I64:
-        list.forEach((number) => {
+        list.forEach(number => {
           this.writeLongInt(number);
         });
         break;
       case Compact.TYPE_BINARY:
-        list.forEach((string) => {
+        list.forEach(string => {
           this.writeVarint(string.length);
           this.writeBinary(string);
         });
@@ -357,6 +347,30 @@ export class ThriftProxyHandler implements ProxyHandler<{}> {
         this.writer.writeString(idValue, value);
         break;
 
+      case SyntaxType.I64Keyword:
+        this.writer.writeInt64(idValue, value);
+        break;
+
+      case SyntaxType.I32Keyword:
+        this.writer.writeInt32(idValue, value);
+        break;
+
+      case SyntaxType.I16Keyword:
+        this.writer.writeInt16(idValue, value);
+        break;
+
+      case SyntaxType.I8Keyword:
+        this.writer.writeInt8(idValue, value);
+        break;
+
+      case SyntaxType.BoolKeyword:
+        this.writer.writeBool(idValue, value);
+        break;
+
+      case SyntaxType.ByteKeyword:
+        this.writer.writeByte(value);
+        break;
+
       case SyntaxType.ListType:
         const { fieldType } = field;
         const {
@@ -395,6 +409,10 @@ export class ThriftProxyHandler implements ProxyHandler<{}> {
 
 export class ThriftProxyObject {
   constructor(private readonly writer: Writer) {}
+
+  stop() {
+    this.writer.writeStop();
+  }
 
   toString() {
     return this.writer.getBuffer();
