@@ -1,6 +1,6 @@
 {
   "name": "thrift-ds",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Thrift data structures",
   "main": "src/thrift.js",
   "repository": "https://github.com/Rastopyr/thrift-ds.git",
